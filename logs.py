@@ -66,10 +66,35 @@ def detect_and_parse(line: str) -> dict | None:
 
     return None  
 
+# SOlution to Three
+def count_log_levels(file_path: str):
+    errors   = 0
+    warnings = 0
+    info     = 0
+
+    with open(file_path, "r", encoding="utf-8") as log_file:
+        for line in log_file:
+            parsed = detect_and_parse(line)
+            if parsed:
+                level = parsed["level"].upper()
+                if level == "ERROR":
+                    errors += 1
+                elif level == "WARNING":
+                    warnings += 1
+                elif level == "INFO":
+                    info += 1
+
+    print(f"Errors:   {errors}")
+    print(f"Warnings: {warnings}")
+    print(f"Info:     {info}")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Read a log file line by line")
     parser.add_argument("-file", required=True, help="Path to the log file")
     args = parser.parse_args()
 
     read_log(args.file)
+    print()
+    count_log_levels(args.file)
 
