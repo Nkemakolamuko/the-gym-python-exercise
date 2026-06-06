@@ -1,1 +1,2 @@
-# the-gym-python-exercise
+# The Gym Python Exercise
+## Solution to project 1
