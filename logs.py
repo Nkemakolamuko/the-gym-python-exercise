@@ -67,11 +67,11 @@ def detect_and_parse(line):
 
 def analyze_logs(file_path):
     """Single pass — collect everything at once."""
-    total    = 0
-    errors   = 0
+    total = 0
+    errors = 0
     warnings = 0
-    info     = 0
-    error_counts       = {}
+    info = 0
+    error_counts = {}
     failure_timestamps = []
 
     with open(file_path, "r", encoding="utf-8") as log_file:
