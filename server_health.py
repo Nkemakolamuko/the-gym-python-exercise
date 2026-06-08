@@ -1,6 +1,7 @@
 import subprocess
 import json
 
+# Solution to question 1
 def load_list_of_servers():
     with open("servers.json", "r") as f:
         config = json.load(f)
