@@ -24,6 +24,12 @@ def send_request_to_one_server():
 
     print(f"{output}")
     print(f"Elapsed time: {elapsed_time:.2f}ms")
+    # Solution to question 4
+    status_code = result.stdout.strip()
+    if((status_code >= 200) and (status_code <= 299)):
+        print(f"Service is healthy.")
+    elif status_code >= 400:
+        print(f"Service is down")
 
 
 # result = subprocess.run(['curl', '-l', 'https://httpbin.org/status/200'])
