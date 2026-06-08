@@ -12,6 +12,7 @@ def load_list_of_servers():
 # Solution to question 2
 def send_request_to_one_server():
     url = "https://httpbin.org/status/200"
+    # url = "https://httpbin.org/status/500" # uncomment to test for failing server
     start_time = time.perf_counter()
     result = subprocess.run(['curl', '-s', '-o', '/dev/null', '-w', "%{http_code}", url], capture_output=True, text=True)
     end_time = time.perf_counter()
@@ -25,7 +26,7 @@ def send_request_to_one_server():
     print(f"{output}")
     print(f"Elapsed time: {elapsed_time:.2f}ms")
     # Solution to question 4
-    status_code = result.stdout.strip()
+    status_code = int(result.stdout.strip())
     if((status_code >= 200) and (status_code <= 299)):
         print(f"Service is healthy.")
     elif status_code >= 400:
