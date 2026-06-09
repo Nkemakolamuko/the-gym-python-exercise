@@ -3,6 +3,7 @@ import json
 import time
 import requests
 import os
+from concurrent.futures import ThreadPoolExecutor
 
 # Solution to question 1
 def load_list_of_servers():
@@ -157,6 +158,18 @@ def check_all_servers():
     for url in servers:
         result = check_server(url)
         results.append(result)
+        print(format_result(result))
+
+    return results
+
+# Solution to 11
+def check_all_servers():
+    servers = load_servers()
+
+    with ThreadPoolExecutor() as executor:
+        results = list(executor.map(check_server, servers))
+
+    for result in results:
         print(format_result(result))
 
     return results
