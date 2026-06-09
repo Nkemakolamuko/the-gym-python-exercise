@@ -152,29 +152,6 @@ def format_result(result):
     else:
         return f"{url} — DOWN ({status})"
 
-def check_all_servers():
-    servers  = load_servers()
-    results  = []
-
-    for url in servers:
-        result = check_server(url)
-        results.append(result)
-        print(format_result(result))
-
-    return results
-
-# Solution to 11
-def check_all_servers():
-    servers = load_servers()
-
-    with ThreadPoolExecutor() as executor:
-        results = list(executor.map(check_server, servers))
-
-    for result in results:
-        print(format_result(result))
-
-    return results
-
 
 # Solution to 12
 def check_server(url, retries=2):
@@ -237,4 +214,5 @@ if __name__ == "__main__":
     save_failed_services()
     print()
     load_servers()
-
+    print()
+    check_all_servers()
