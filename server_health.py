@@ -62,6 +62,20 @@ def validate_json_body():
     else:
         print(f"Unhealthy -- response has no body of status - ok")
         print(f"Received: {data}")
+
+
+# Solution to 6
+def detect_slow_service():
+    start = time.perf_counter()
+    response = requests.get('https://httpbin.org/delay/2')
+    # print(f"Delayed response: {response.json()}")
+    end = time.perf_counter()
+
+    delay = end - start
+    if delay > 2100:
+        print(f"slow response - {delay:.2f}ms")
+    else:
+        print(f"fast response - {delay:.2f}ms")
         
 
 if __name__ == "__main__":
@@ -71,4 +85,6 @@ if __name__ == "__main__":
     send_request_to_one_server()
     print()
     validate_json_body()
+    print()
+    detect_slow_service()
 
