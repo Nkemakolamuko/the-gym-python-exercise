@@ -107,4 +107,6 @@ if __name__ == "__main__":
     validate_json_body()
     print()
     detect_slow_service()
+    print()
+    print_result_per_service()
 
