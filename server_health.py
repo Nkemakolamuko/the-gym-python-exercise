@@ -96,6 +96,21 @@ def print_result_per_service():
 
     except requests.Timeout:
         print(f"{'https://httpbin.org/delay/2'} - TIMEOUT")
+
+
+# Solution to 8
+def save_failed_services():
+    failed_services = []
+    response = requests.get('https://httpbin.org/delay/2')
+    status_code = response.status_code
+
+    if status_code < 200 or status_code > 299:
+        failed_services.append('https://httpbin.org/delay/2')
+
+    if failed_services:
+        print(f"Failed services: {', '.join(failed_services)}")
+    else:
+        print("All services healthy.")
         
 
 if __name__ == "__main__":
@@ -109,4 +124,6 @@ if __name__ == "__main__":
     detect_slow_service()
     print()
     print_result_per_service()
+    print()
+    save_failed_services()
 
