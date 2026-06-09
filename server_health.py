@@ -126,6 +126,40 @@ def load_servers():
     with open(file_path, "r") as f:
         config = json.load(f)
     return config["servers"]
+
+# Solution to 10
+def check_server(url):
+    start = time.perf_counter()
+    response = requests.get(url)
+    end = time.perf_counter()
+
+    return {
+        "url": url,
+        "status": response.status_code,
+        "elapsed_ms": (end - start) * 1000
+    }
+
+def format_result(result):
+    url = result["url"]
+    status = result["status"]
+    elapsed_ms = result["elapsed_ms"]
+    slow_tag = " [slow]" if elapsed_ms > 500 else ""
+
+    if 200 <= status <= 299:
+        return f"{url} — OK ({status}) — {elapsed_ms:.0f}ms{slow_tag}"
+    else:
+        return f"{url} — DOWN ({status})"
+
+def check_all_servers():
+    servers  = load_servers()
+    results  = []
+
+    for url in servers:
+        result = check_server(url)
+        results.append(result)
+        print(format_result(result))
+
+    return results
         
 
 if __name__ == "__main__":
