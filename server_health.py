@@ -4,6 +4,7 @@ import time
 import requests
 import os
 from concurrent.futures import ThreadPoolExecutor
+import smtplib
 
 # Solution to question 1
 def load_list_of_servers():
@@ -187,6 +188,38 @@ def check_server(url, retries=2):
         print(f"Attempt {attempt + 1} failed for {url} - retrying...")
 
     return {"url": url, "status": status}
+
+
+# Solution to 13
+def send_alert(url):
+    sender   = "vintio234@gmail.com"
+    receiver = "n.nweke@alustudent.com"
+    subject  = f"Service down: {url}"
+    body     = f"Subject: {subject}\n\nService {url} is down. Check immediately."
+
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(sender, os.environ.get("EMAIL_PASSWORD"))
+        server.sendmail(sender, receiver, body)
+
+    print(f"Alert sent for {url}")
+
+def check_all_servers():
+    servers       = load_servers()
+    failed        = []
+
+    with ThreadPoolExecutor() as executor:
+        results = list(executor.map(check_server, servers))
+
+    for result in results:
+        print(format_result(result))
+        if not (200 <= result["status"] <= 299):
+            failed.append(result["url"])
+            send_alert(result["url"])
+
+    if failed:
+        print(f"\nFailed services: {', '.join(failed)}")
+
 
 
 if __name__ == "__main__":
