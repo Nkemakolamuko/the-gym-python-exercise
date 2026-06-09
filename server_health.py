@@ -2,6 +2,7 @@ import subprocess
 import json
 import time
 import requests
+import os
 
 # Solution to question 1
 def load_list_of_servers():
@@ -111,6 +112,20 @@ def save_failed_services():
         print(f"Failed services: {', '.join(failed_services)}")
     else:
         print("All services healthy.")
+
+
+# Solution to 9
+def load_servers():
+    env_path = os.environ.get("SERVERS_CONFIG")
+    file_path = env_path if env_path else "servers.json"
+
+    if not os.path.exists(file_path):
+        print("Error: No config file found and SERVERS_CONFIG env variable not set")
+        return []
+
+    with open(file_path, "r") as f:
+        config = json.load(f)
+    return config["servers"]
         
 
 if __name__ == "__main__":
@@ -126,4 +141,6 @@ if __name__ == "__main__":
     print_result_per_service()
     print()
     save_failed_services()
+    print()
+    load_servers()
 
