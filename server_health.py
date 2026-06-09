@@ -72,10 +72,30 @@ def detect_slow_service():
     end = time.perf_counter()
 
     delay = end - start
-    if delay > 2100:
+    if delay > 2100 * 1000:
         print(f"slow response - {delay:.2f}ms")
     else:
         print(f"fast response - {delay:.2f}ms")
+
+
+# Solution to 7
+def print_result_per_service():
+    try:
+        start = time.perf_counter()
+        response = requests.get('https://httpbin.org/delay/2', timeout=5)
+        end = time.perf_counter()
+
+        elapsed_ms = (end - start) * 1000
+        status_code = response.status_code
+        slow_tag = " [slow]" if elapsed_ms > 500 else ""
+
+        if 200 <= status_code <= 299:
+            print(f"{'https://httpbin.org/delay/2'} - OK ({status_code}) - {elapsed_ms:.0f}ms{slow_tag}")
+        else:
+            print(f"{'https://httpbin.org/delay/2'} - DOWN ({status_code})")
+
+    except requests.Timeout:
+        print(f"{'https://httpbin.org/delay/2'} - TIMEOUT")
         
 
 if __name__ == "__main__":
