@@ -173,7 +173,21 @@ def check_all_servers():
         print(format_result(result))
 
     return results
-        
+
+
+# Solution to 12
+def check_server(url, retries=2):
+    for attempt in range(retries):
+        response = requests.get(url)
+        status   = response.status_code
+
+        if 200 <= status <= 299:
+            return {"url": url, "status": status}
+
+        print(f"Attempt {attempt + 1} failed for {url} - retrying...")
+
+    return {"url": url, "status": status}
+
 
 if __name__ == "__main__":
     print()
