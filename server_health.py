@@ -1,6 +1,7 @@
 import subprocess
 import json
 import time
+import requests
 
 # Solution to question 1
 def load_list_of_servers():
@@ -36,9 +37,38 @@ def send_request_to_one_server():
 # result = subprocess.run(['curl', '-l', 'https://httpbin.org/status/200'])
 # print(result.returncode)
 
+# Solution to question 5
+def validate_json_body():
+    # response = subprocess.run(['curl', '-I', 'https://httpbin.org/json'], capture_output=True, text=True)
+    # if "content-type: application/json" in response.stdout.lower():
+    #     print(f"Response type: JSON")
+    # else:
+    #     print("Response type is not JSON")
+    url = 'https://httpbin.org/json'
+    response = requests.get(url)
+    status_code = response.status_code
+    if status_code != 200:
+        print(f"Status code is not 200, returned {status_code}")
+        return
+
+    content_type = response.headers['Content-Type']
+    if content_type != 'application/json':
+        print(f"Unhealthy response - not JSON: {content_type}")
+        return
+    
+    data = response.json()
+    if data.get('status') == 'ok':
+        print(f'Healthy -- status is ok')
+    else:
+        print(f"Unhealthy -- response has no body of status - ok")
+        print(f"Received: {data}")
+        
+
 if __name__ == "__main__":
     print()
     load_list_of_servers()
     print()
     send_request_to_one_server()
+    print()
+    validate_json_body()
 
